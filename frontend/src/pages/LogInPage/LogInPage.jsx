@@ -16,6 +16,7 @@ export default function LogInPage({ setUser }) {
     try {
       const user = await authService.logIn(formData);
       setUser(user);
+      // conditional here
       navigate('/posts');
     } catch (err) {
       setErrorMsg('Log In Failed - Try Again');
@@ -49,6 +50,7 @@ export default function LogInPage({ setUser }) {
         />
         <button type="submit">LOG IN</button>
       </form>
+     <button onClick={()=>navigate('/signup')}>New user? Sign up instead</button>
       <p className="error-message">&nbsp;{errorMsg}</p>
     </>
   );

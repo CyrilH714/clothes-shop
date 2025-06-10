@@ -15,7 +15,7 @@ export default function NavBar({ user, setUser }) {
     <nav className="NavBar">
       <NavLink to="/">Home</NavLink>
       &nbsp; | &nbsp;
-      {user ? (
+      
         <>
           <NavLink to="/posts" end>
             Post List
@@ -23,16 +23,15 @@ export default function NavBar({ user, setUser }) {
           &nbsp; | &nbsp;
           <NavLink to="/posts/new">New Post</NavLink>
           &nbsp; | &nbsp;
+          {user ? (
+            <>
           <Link to="/" onClick={handleLogOut}>Log Out</Link>
           <span>Welcome, {user.name}</span>
-        </>
-      ) : (
-        <>
-          <NavLink to="/login">Log In</NavLink>
-          &nbsp; | &nbsp;
-          <NavLink to="/signup">Sign Up</NavLink>
-        </>
-      )}
+          </>
+          ) : (
+      <NavLink to="/login">Log In</NavLink>
+      )} 
+      </>
     </nav>
   );
 }
