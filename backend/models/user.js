@@ -23,7 +23,7 @@ const userSchema = new Schema(
       required:false
   },
   phoneNum:{
-    type: NNumber,
+    type: Number,
     required:false,
   },},
   {
