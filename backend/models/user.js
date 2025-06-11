@@ -18,7 +18,14 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    address:{
+      type:String,
+      required:false
   },
+  phoneNum:{
+    type: NNumber,
+    required:false,
+  },},
   {
     timestamps: true,
     // Remove password when doc is sent across network
