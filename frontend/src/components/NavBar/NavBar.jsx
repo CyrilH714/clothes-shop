@@ -8,30 +8,28 @@ export default function NavBar({ user, setUser }) {
   function handleLogOut() {
     logOut();
     setUser(null);
-    // The <Link> that was clicked will navigate to "/"
   }
-
-  return (
-    <nav className="NavBar">
-      <NavLink to="/">Home</NavLink>
-      &nbsp; | &nbsp;
-      
-        <>
-          <NavLink to="/posts" end>
-            Post List
+ return (
+    <nav className="nav">
+      <div className="left">
+        <NavLink className="link" to="/">
+          Home
+        </NavLink>
+        {user ? (
+          <NavLink className="link" to="/profile">
+            Welcome, {user.name}
           </NavLink>
-          &nbsp; | &nbsp;
-          <NavLink to="/posts/new">New Post</NavLink>
-          &nbsp; | &nbsp;
-          {user ? (
-            <>
-          <Link to="/" onClick={handleLogOut}>Log Out</Link>
-          <span>Welcome, {user.name}</span>
-          </>
-          ) : (
-      <NavLink to="/login">Log In</NavLink>
-      )} 
-      </>
+        ) : (
+          <NavLink className="link" to="/login">
+            Log In
+          </NavLink>
+        )}
+      </div>
+      <div className="right">
+        <button onClick={() => navigate('/basket')} className="basket-btn">
+          🛒
+        </button>
+      </div>
     </nav>
   );
 }

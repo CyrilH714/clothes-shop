@@ -1,0 +1,81 @@
+.home {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  padding: 2.5rem 1.5rem;
+  box-sizing: border-box;
+}
+
+/* ---------- Hero ----------- */
+.hero {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+.hero .title {
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.hero .subtitle {
+  font-size: 1.05rem;
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+}
+.primary {
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  padding: 0.7rem 1.6rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.primary:hover {
+  background: var(--accent);
+}
+
+/* ---------- About ----------- */
+.about {
+  max-width: 600px;
+  margin: 0 auto 3rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+/* ---------- Category Cards Grid ----------- */
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.category-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.25s, transform 0.2s;
+}
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 16px rgba(0, 0, 0, 0.06);
+}
+.category-card img {
+  display: block;
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+.category-card span {
+  display: block;
+  padding: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.3px;
+}

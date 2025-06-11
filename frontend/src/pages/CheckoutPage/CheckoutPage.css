@@ -1,0 +1,41 @@
+.checkout {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #f7f7f5;
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+.total {
+  margin-top: 0.5rem;
+  border-top: 1px solid #ddd;
+  padding-top: 0.4rem;
+}
+.address input {
+  width: 100%;
+  margin: 0.3rem 0;
+  padding: 0.5rem;
+}
+.payment label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.4rem 0;
+}
+.order-btn {
+  margin-top: 1.2rem;
+  width: 100%;
+  padding: 0.8rem;
+  background: #111;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.order-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

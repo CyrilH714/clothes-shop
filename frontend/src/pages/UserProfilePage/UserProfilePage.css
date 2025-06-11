@@ -1,0 +1,8 @@
+.profile-page { max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
+.section      { margin-bottom: 2.2rem; }
+.addr-grid    { display: grid; gap: .6rem; grid-template-columns: 1fr 1fr; margin: .6rem 0; }
+.orders       { width: 100%; border-collapse: collapse; }
+.orders th,.orders td { border: 1px solid #ddd; padding: .4rem .6rem; text-align: left; }
+.msg          { margin-left: .8rem; color: forestgreen; font-size: .9rem; }
+button        { padding: .5rem 1.2rem; }
+

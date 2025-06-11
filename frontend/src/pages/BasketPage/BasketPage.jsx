@@ -1,13 +1,15 @@
 import { useNavigate } from 'react-router-dom';
+import {addItemToBasket} from "../../services/itemService"
 
 export default function BasketPage() {
   const navigate = useNavigate();
 
   function handleCheckout() {
-    {user?
-    navigate('/login', {state: { redirect: '/checkout' } }
-    ): navigate("/CheckoutPage");
-  }}
+    user ?
+    navigate("/CheckoutPage")
+    : navigate('/login', {state: { redirect: '/checkout' } }
+    );
+  }
 
   return (
     <div>
