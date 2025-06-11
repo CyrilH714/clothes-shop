@@ -4,14 +4,26 @@ export default function BasketPage() {
   const navigate = useNavigate();
 
   function handleCheckout() {
+    {user?
     navigate('/login', {state: { redirect: '/checkout' } }
-    );
-  }
+    ): navigate("/CheckoutPage");
+  }}
 
   return (
     <div>
       <h2>Your Basket</h2>
-      {/* basket items... */}
+      <ul>
+   {/* basket items... */}
+   {items.map((item)=>(
+    <li>
+<p>{item.name}</p>
+// item image
+// sum of items cost
+// item number
+</li>
+   ))}
+      </ul>
+   
       <button onClick={handleCheckout}>Proceed to Checkout</button>
     </div>
   );

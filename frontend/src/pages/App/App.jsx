@@ -9,8 +9,11 @@ import './App.css';
 
 export default function App() {
   const [user, setUser] = useState(getUser());
-
-  return (
+cost [basketItems, setBasketItems]=useState([JSON.parse(saved)])
+useEffect(()=>{
+  localStorage.setItem("basket", JSON.stringify(basketItems));
+},[basketItems])  
+return (
     <main className="App">
       <NavBar user={user} setUser={setUser} />
       <section id="main-section">
