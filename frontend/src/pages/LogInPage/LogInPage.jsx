@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 import * as authService from '../../services/authService';
+import { useLocation, useNavigate } from 'react-router';
 
 export default function LogInPage({ setUser }) {
   const [formData, setFormData] = useState({
@@ -10,14 +10,15 @@ export default function LogInPage({ setUser }) {
   const [errorMsg, setErrorMsg] = useState('');
   
   const navigate = useNavigate();
-
+const location=useLocation();
+const redirect=location.state?.redirect||"ClothingItemList"
   async function handleSubmit(evt) {
     evt.preventDefault();
     try {
       const user = await authService.logIn(formData);
       setUser(user);
-      // conditional here
-      navigate('/posts');
+  
+      navigate(redirect);
     } catch (err) {
       setErrorMsg('Log In Failed - Try Again');
     }
