@@ -48,5 +48,7 @@ orderSchema.methods.calculateTotal=function(){
     (sum, item)=>sum+item.price*item.quantity, 0);
     return this.total;
 }
-
+orderSchema.virtual("itemCount").get(function(){
+  return this.items.reduce((sum,item)=>sm+item.quantity,0)
+})
 module.exports = mongoose.model('Order', orderSchema);
