@@ -36,7 +36,7 @@ return (
         <Route path="/items" element={<ClothingListPage />} />
         <Route path="/items/:id" element={<ClothingItemPage onAdd={handleAddToBasket}/>} />
         <Route path="/basket"   element={<BasketPage user={user} items={basketItems} setBasketItems={setBasketItems} />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/checkout" element={<CheckoutPage user={user} basket={basketItems} clearBasket={()=>setBasketItems([])}/>} />
         <Route path="*" element={<ErrorPage />} />
         <Route path="/confirmation" element={<ConfirmationPage/>}/>
       </Routes>

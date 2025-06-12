@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const reviewSchema = new Schema(
   {
     author: { 
-        type: mongoose.schema.types.ObjectId,
+        type:Schema.Types.ObjectId,
          required: true },
     message: {
       type: String,
@@ -28,6 +28,7 @@ const itemSchema = new Schema(
         type: String,
          required: true },
     type: {
+      type:String,
 enum:["dress","top","skirt","outerwear","accessory"],      
 required: true,
     },
@@ -52,6 +53,7 @@ required: true,
     required:false,
 },
 condition:{
+  type:String,
     enum:["Not worn","Lightly used", "Very used"],
     required:false,
 },

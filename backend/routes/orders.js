@@ -1,7 +1,7 @@
 const express = require('express');
 const router  = express.Router();
 const ensureLoggedIn = require('../middleware/ensureLoggedIn');
-const orderCtrl = require('../controllers/orderController');
+const orderCtrl = require('../controllers/order');
 
 router.use(ensureLoggedIn);
 

@@ -1,3 +1,6 @@
+import sendRequest from "./sendRequest";
+const BASE_URL="/api/items";
+
 export const addItemToBasket= (basket, newItem)=>{
     const existing=basket.find(item=>item.id===newItem.id);
     if (existing){
@@ -10,4 +13,10 @@ export const addItemToBasket= (basket, newItem)=>{
 
 export async function addToBasket(itemId, qty = 1) {
   return sendRequest('/api/orders/basket/add', 'POST', { itemId, qty });
+}
+
+export async function index(category=""){
+
+    const url = category ? `${BASE_URL}?category=${category}` : BASE_URL;
+  return sendRequest(url);
 }

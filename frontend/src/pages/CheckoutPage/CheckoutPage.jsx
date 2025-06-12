@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {addItemToBasket} from '../../services/itemService';  
+import { checkout} from '../../services/orderService';
 import './CheckoutPage.css';                   
 
-export default function CheckoutPage({ user }) {
-  const { basket, clearBasket } = addItemToBasket();
+export default function CheckoutPage({ user, basket, clearBasket }) {
   const navigate = useNavigate();
 
   const total = basket.reduce(
@@ -21,15 +20,23 @@ export default function CheckoutPage({ user }) {
   });
 
   const [payment, setPayment] = useState(''); // e.g. 'card' or 'paypal'
+  const [processing, setProcessing] = useState(false);
+  const [error, setError]= useState('');
 
   const isAddressComplete = Object.values(address).every(Boolean);
-  const canOrder= isAddressComplete && payment && basket.length > 0;
+  const canOrder= isAddressComplete && payment && basket.length > 0 && !processing;
 
-  function handleOrderNow() {
+  async function handleOrderNow() {
     if (!canOrder) return;
-    clearBasket();
-    navigate('/confirmation');                      // or order confirmation page
-  }
+    try{
+        setProcessing(true);
+        await checkout(address,payment)
+        clearBasket();
+    navigate('/confirmation');   
+  } catch(error){
+    setError(error.message);
+    setProcessing(false)
+  }}
 
   return (
     <main className="checkout">
@@ -49,65 +56,36 @@ export default function CheckoutPage({ user }) {
       </section>
       <section className="address">
         <h2>Shipping Address</h2>
+        {['name','street','city','postcode','country'].map(key=>(
         <input
-          type="text"
-          placeholder="Name"
-          value={address.name}
-          onChange={e => setAddress({ ...address, name: e.target.value })}/>
-        <input
-          type="text"
-          placeholder="Street"
-          value={address.street}
-          onChange={e => setAddress({ ...address, street: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="City"
-          value={address.city}
-          onChange={e => setAddress({ ...address, city: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Postcode"
-          value={address.postcode}
-          onChange={e => setAddress({ ...address, postcode: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Country"
-          value={address.country}
-          onChange={e => setAddress({ ...address, country: e.target.value })}
-        />
+        key={key}
+          placeholder={key[0].toUpperCase()+key.slice(1)}
+          value={address[key]}
+          onChange={event => setAddress({ ...address, [key]: event.target.value })}/>
+        ))}
       </section>
       <section className="payment">
         <h2>Payment Method</h2>
-        <label>
+        {["card","paypal"].map(option=>(
+        <label key={option}>
           <input
             type="radio"
             name="pay"
-            value="card"
-            checked={payment === 'card'}
-            onChange={e => setPayment(e.target.value)}
+            value={option}
+            checked={payment === option}
+            onChange={event => setPayment(event.target.value)}
           />
-          Credit / Debit Card
+          {option==="card"?"Credit/Debit card":"PayPal"}
         </label>
-        <label>
-          <input
-            type="radio"
-            name="pay"
-            value="paypal"
-            checked={payment === 'paypal'}
-            onChange={e => setPayment(e.target.value)}
-          />
-          PayPal
-        </label>
+        ))}
       </section>
+      {error && <p className="error">{error}</p>}
       <button
         className="order-btn"
         disabled={!canOrder}
         onClick={handleOrderNow}
       >
-        Order Now
+        {processing?"Processing...":"Order Now"}
       </button>
     </main>
   );

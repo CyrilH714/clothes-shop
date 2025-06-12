@@ -23,10 +23,10 @@ app.use(require('./middleware/checkToken'));
 
 // API Routes
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/items',  require('./routes/items'));  
+app.use('/api/orders', require('./routes/orders'));
 
 
-
-// Use a "catch-all" route to deliver the frontend's production index.html
 app.get('/*splat', function (req, res) {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
