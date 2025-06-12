@@ -38,15 +38,12 @@
   background: var(--accent);
 }
 
-/* ---------- About ----------- */
 .about {
   max-width: 600px;
   margin: 0 auto 3rem;
   line-height: 1.6;
   opacity: 0.85;
 }
-
-/* ---------- Category Cards Grid ----------- */
 .categories {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
