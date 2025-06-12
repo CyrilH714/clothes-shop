@@ -23,12 +23,12 @@ export default function CheckoutPage({ user }) {
   const [payment, setPayment] = useState(''); // e.g. 'card' or 'paypal'
 
   const isAddressComplete = Object.values(address).every(Boolean);
-  const canOrder          = isAddressComplete && payment && basket.length > 0;
+  const canOrder= isAddressComplete && payment && basket.length > 0;
 
   function handleOrderNow() {
     if (!canOrder) return;
     clearBasket();
-    navigate('/thankyou');                      // or order confirmation page
+    navigate('/confirmation');                      // or order confirmation page
   }
 
   return (

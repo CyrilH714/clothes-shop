@@ -11,6 +11,7 @@ import CheckoutPage      from '../CheckoutPage/CheckoutPage';
 import ClothingListPage  from '../ClothingListPage/ClothingListPage';
 import ClothingItemPage  from '../ClothingItemPage/ClothingItemPage';
 import ErrorPage      from '../ErrorPage/ErrorPage'; 
+import ConfirmationPage from '../ConfirmationPage/ConfirmationPage';
 import './App.css';
 
 export default function App() {
@@ -37,6 +38,7 @@ return (
         <Route path="/basket"   element={<BasketPage user={user} items={basketItems} setBasketItems={setBasketItems} />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="*" element={<ErrorPage />} />
+        <Route path="/confirmation" element={<ConfirmationPage/>}/>
       </Routes>
       </>
   );

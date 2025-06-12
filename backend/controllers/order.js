@@ -1,4 +1,4 @@
-const Order=require( "../models/order");
+const Order=require( "../models/Order");
 const Item=require( "../models/item");
 
 module.exports={addToBasket, getBasket, checkout};
@@ -9,7 +9,7 @@ async function addToBasket(req, res){
     const basket=await Order.getBasket(userId);
     const item=await Item.findById(itemId);
     if(!item) return res.status(404).json({message:"Item not found"});
-    const existing=basket.items.find(item=>item._id === String(itemId));
+    const existing=basket.items.find(item=>item.productId.equals(itemId));
     if (existing){
         existing.quantity+=quantity
     } else{

@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import {addItemToBasket} from "../../services/itemService"
 import "./BasketPage.css";
 
 export default function BasketPage({user, items=[], setItems}) {
