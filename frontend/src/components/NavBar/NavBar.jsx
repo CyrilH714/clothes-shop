@@ -1,34 +1,53 @@
-import { NavLink, Link, useNavigate } from 'react-router';
+import { NavLink, Link, useNavigate, useLocation } from 'react-router';
 import { logOut } from '../../services/authService';
 import './NavBar.css';
 
-export default function NavBar({ user, setUser }) {
+export default function NavBar({ user, setUser, basketCount }) {
   const navigate = useNavigate();
-
+  const location=useLocation();
+  const path=location.pathname;
+  const isHome=path==="/";
+  const isBasket=path==='/basket';
   function handleLogOut() {
     logOut();
     setUser(null);
+    navigate('/');
   }
  return (
     <nav className="nav">
       <div className="left">
-        <NavLink className="link" to="/">
+        {!isHome && (
+        <NavLink className="link gap" to="/">
           Home
         </NavLink>
+        )}
         {user ? (
+          <div>
           <NavLink className="link" to="/profile">
             Welcome, {user.name}
           </NavLink>
+          <button className='link-btn gap' onclick={handleLogOut}>
+            log&nbsp;Out
+            </button>
+            </div>
         ) : (
-          <NavLink className="link" to="/login">
-            Log In
-          </NavLink>
+          <button className="link-btn gap" to="/login">
+            Log&nbsp;In
+          </button>
         )}
       </div>
+      <div className="middle">
+        <NavLink className='link' to='/items'>See clothes</NavLink>
+      </div>
       <div className="right">
-        <button onClick={() => navigate('/basket')} className="basket-btn">
-          🛒
-        </button>
+{!isBasket && (
+          <button className="basket-btn" onClick={() => navigate('/basket')}>
+            🛒
+            {basketCount > 0 && (
+              <span className="badge">{basketCount}</span>
+            )}
+          </button>
+        )}
       </div>
     </nav>
   );

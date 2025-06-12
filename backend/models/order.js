@@ -1,33 +1,47 @@
 const Schema = mongoose.Schema;
 
+const orderItemSchema=new Schema({
+  itemId:{
+    type:Schema.Types.ObjectId,
+    ref:"Item",
+    required:true
+  },
+  name:{type:String},
+  price:{type:Number},
+   quantity:{
+        type:Number,
+      default:1},
+})
 
 
 const orderSchema = new Schema(
   {
     buyerId: { 
-        type: mongoose.schema.types.ObjectId,
-         required: true },
-    itemId: {
-      type: mongoose.schema.types.ObjectId,
-      required: true,
+        type: Schema.Types.ObjectId,
+         required: true,
+        ref:"User" },
+    items: [orderItemSchema],
+    paid: {
+      type: Boolean,
+      default: false,
     },
-    status: {
-      enum:["Pending","Ordered"],
-      required: true,
-    },
-    quantity:{
-        type:Number,
-        required:true},
 
     totalItemsCost:{
         type:Number,
-        required:true,},
+      default:0},
   },
   {
     timestamps: true,
   }
 );
 
+orderSchema.statics.getBasket=async function (userId){
+  let basket=await this.findOne({user:userid, paid:false});
+  if (!basket){
+    basket=await this.create({user:userId, items:[], total:0})
+  }
+  return basket;
+}
 
 
 module.exports = mongoose.model('Order', orderSchema);
