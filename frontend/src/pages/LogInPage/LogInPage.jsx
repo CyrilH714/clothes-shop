@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 
 export default function LogInPage({ setUser }) {
   const [formData, setFormData] = useState({
+    name:'',
     email: '',
     password: '',
   });

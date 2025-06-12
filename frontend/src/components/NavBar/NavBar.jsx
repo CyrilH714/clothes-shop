@@ -1,4 +1,4 @@
-import { NavLink, Link, useNavigate, useLocation } from 'react-router';
+import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import { logOut } from '../../services/authService';
 import './NavBar.css';
 
@@ -26,12 +26,12 @@ export default function NavBar({ user, setUser, basketCount }) {
           <NavLink className="link" to="/profile">
             Welcome, {user.name}
           </NavLink>
-          <button className='link-btn gap' onclick={handleLogOut}>
+          <button className='link-btn gap' onClick={handleLogOut}>
             log&nbsp;Out
             </button>
             </div>
         ) : (
-          <button className="link-btn gap" to="/login">
+          <button className="link-btn gap" onClick={()=>navigate("/login")}>
             Log&nbsp;In
           </button>
         )}

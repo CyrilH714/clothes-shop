@@ -51,4 +51,28 @@ orderSchema.methods.calculateTotal=function(){
 orderSchema.virtual("itemCount").get(function(){
   return this.items.reduce((sum,item)=>sm+item.quantity,0)
 })
+orderSchema.methods.addOrUpdateItem = function (itemId, qty) {
+  const row = this.items.find(it => it.productId.equals(itemId));
+  row ? (row.quantity += qty) : this.items.push({ productId: itemId, quantity: qty });
+};
+orderSchema.methods.addItem = async function (itemId, qty = 1) {
+  const existing = this.items.find(it => it.productId.equals(itemId));
+  if (existing) {
+    existing.quantity += qty;
+  } else {
+    const item = await mongoose.model('Item').findById(itemId);
+    if (item) {
+      this.items.push({
+        productId: item._id,
+        name: item.name,
+        price: item.price,
+        quantity: qty
+      });
+    }
+  }
+  await this.save();
+};
+orderSchema.virtual('total').get(function () {
+  return this.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+});
 module.exports = mongoose.model('Order', orderSchema);

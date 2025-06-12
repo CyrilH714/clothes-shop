@@ -3,40 +3,47 @@ const Item=require( "../models/item");
 
 module.exports={addToBasket, getBasket, checkout};
 
-async function addToBasket(req, res){
-    const userId=req.user._id;
-    const {itemId, quantity=1}=req.body;
-    const basket=await Order.getBasket(userId);
-    const item=await Item.findById(itemId);
-    if(!item) return res.status(404).json({message:"Item not found"});
-    const existing=basket.items.find(item=>item.productId.equals(itemId));
-    if (existing){
-        existing.quantity+=quantity
-    } else{
-        basket.items.push({
-              productId: itemId,
-      name: item.name,
-      price: item.price,
-      quantity,
-        })
-    }
-basket.calculateTotal();
-  await basket.save();
-  res.json(basket);
-};
+async function addToBasket(req, res) {
+  try {
+    const { itemId, quantity = 1 } = req.body;
+    const basket = await Order.getBasket(req.user._id);
 
-async function getBasket(req,res){
-    const basket=await Order.getBasket(req.user._id);
-    res.json(basket);
+    await basket.addItem(itemId, quantity);
+
+    res.status(200).json(basket);
+  } catch (err) {
+    console.error("Error adding to basket:", err);
+    res.status(500).json({ error: "Failed to add to basket" });
+  }
 }
 
-async function checkout (req,res){
-const basket = await Order.getBasket(req.user._id);
-  if (!basket.items.length) {
-    return res.status(400).json({ msg: 'Basket is empty' });
+async function getBasket(req, res) {
+  try {
+    const basket = await Order.getBasket(req.user._id);
+    res.status(200).json(basket);
+  } catch (err) {
+    console.error("Error fetching basket:", err);
+    res.status(500).json({ error: "Failed to fetch basket" });
   }
-  // Payment integration?
-  basket.paid = true;
-  await basket.save();
-  res.json({ msg: 'Order completed', orderId: basket._id });
-};
+}
+
+async function checkout(req, res) {
+  try {
+    const basket = await Order.getBasket(req.user._id);
+
+    if (!basket.items.length) {
+      return res.status(400).json({ msg: "Basket is empty" });
+    }
+// payment integration?
+    basket.paid = true;
+    await basket.save();
+
+    res.status(200).json({
+      msg: "Order completed",
+      orderId: basket._id,
+    });
+  } catch (err) {
+    console.error("Checkout error:", err);
+    res.status(500).json({ error: "Checkout failed" });
+  }
+}
