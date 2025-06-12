@@ -20,11 +20,7 @@ async function addToBasket(req, res){
       quantity,
         })
     }
-basket.total = basket.items.reduce(
-    (sum, it) => sum + it.price * it.quantity,
-    0
-  );
-
+basket.calculateTotal();
   await basket.save();
   res.json(basket);
 };

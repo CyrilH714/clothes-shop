@@ -43,6 +43,10 @@ orderSchema.statics.getBasket=async function (userId){
   }
   return basket;
 }
-
+orderSchema.methods.calculateTotal=function(){
+  this.total=this.items.reduce(
+    (sum, item)=>sum+item.price*item.quantity, 0);
+    return this.total;
+}
 
 module.exports = mongoose.model('Order', orderSchema);
