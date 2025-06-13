@@ -1,39 +1,39 @@
 import { useNavigate } from 'react-router-dom';
 import "./BasketPage.css";
 
-export default function BasketPage({user, items=[], setItems}) {
+export default function BasketPage({user, basketItems=[], setBasketItems}) {
   const navigate = useNavigate();
 
-  const total=items.reduce(
-    (sum, item)=>sum+item.price*item.quantity, 0);
+  const total=basketItems.reduce(
+    (sum, item)=>sum+Number(item.price)*item.quantity||item.price*1, 0);
   
   function handleCheckout() {
-    if (!items.length) return(<p>Basket empty</p>)
+    if (!basketItems.length) return(<p>Basket empty</p>)
     user ?
     navigate("/CheckoutPage")
     : navigate('/login', {state: { redirect: '/checkout' } }
     );
   }
 
-  function removeItem(id){
-    setItems(prev=>prev.filter(item=>item.id!==id))
+  function removeItem(itemId){
+    const updated = basketItems.filter(item => item._id !== itemId);
+  setBasketItems(updated);
   }
   return (
     <main className="basket">
       <h2>Your Basket</h2>
 
-      {items.length === 0 ? (
+      {basketItems.length === 0 ? (
         <p>Your basket is empty.</p>
       ) : (
         <>
           <ul className="basket-list">
-            {items.map(item => (
+            {basketItems.map(item => (
               <li key={item.id} className="row">
                 
                <img src={item.img} alt={item.name} /> 
                 <span>{item.name}</span>
-                <span>Qty: {item.quantity}</span>
-                <span>${(item.price * item.quantity).toFixed(2)}</span>
+                <span>${(item.price || 0) * (item.quantity || 1)}</span>
                 <button onClick={() => removeItem(item.id)}>✕</button>
               </li>
             ))}

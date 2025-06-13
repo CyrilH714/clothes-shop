@@ -32,7 +32,7 @@ function handleRemoveFromBasket(itemId) {
 },[basketItems])  
 return (
   <>
-    <NavBar user={user} basketCount={basketItems.length}  />
+    <NavBar user={user} setUser={setUser} basketCount={basketItems.length}  />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login"   element={<LogInPage />} />
@@ -43,7 +43,7 @@ return (
     <ClothingListPage />
   </Suspense>
 } />        <Route path="/items/:id" element={<ClothingItemPage onAdd={handleAddToBasket} onRemove={handleRemoveFromBasket} basketItems={basketItems}/>} />
-        <Route path="/basket"   element={<BasketPage user={user} items={basketItems} setBasketItems={setBasketItems} />} />
+        <Route path="/basket"   element={<BasketPage user={user} basketItems={basketItems} setBasketItems={setBasketItems} />} />
         <Route path="/checkout" element={<CheckoutPage user={user} basket={basketItems} clearBasket={()=>setBasketItems([])}/>} />
         <Route path="*" element={<ErrorPage />} />
         <Route path="/confirmation" element={<ConfirmationPage/>}/>
