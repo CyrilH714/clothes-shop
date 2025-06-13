@@ -27,6 +27,7 @@ export default function UserProfilePage({ user }) {
     setSaveMsg('Address updated');        // quick feedback
     setTimeout(() => setSaveMsg(''), 2000);
   }
+  if (!user) return <p>User details not found</p>;
   return (
     <main className="profile-page">
       <h1>My Profile</h1>

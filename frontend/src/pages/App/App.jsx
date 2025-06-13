@@ -35,9 +35,9 @@ return (
     <NavBar user={user} setUser={setUser} basketCount={basketItems.length}  />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login"   element={<LogInPage />} />
-        <Route path="/signup"  element={<SignUpPage />} />
-        <Route path="/profile" element={<UserProfilePage />} />
+        <Route path="/login"   element={<LogInPage setUser={setUser}/>} />
+        <Route path="/signup"  element={<SignUpPage setUser={setUser}/>} />
+        <Route path="/profile" element={<UserProfilePage user={user}/>} />
 <Route path="/items" element={
   <Suspense fallback={<div>Loading...</div>}>
     <ClothingListPage />

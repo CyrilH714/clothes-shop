@@ -18,8 +18,7 @@ const redirect=location.state?.redirect||"ClothingItemList"
     try {
       const user = await authService.logIn(formData);
       setUser(user);
-  
-      navigate(redirect);
+      navigate('/items');
     } catch (err) {
       setErrorMsg('Log In Failed - Try Again');
     }
