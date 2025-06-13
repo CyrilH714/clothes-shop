@@ -13,16 +13,20 @@ import ClothingItemPage  from '../ClothingItemPage/ClothingItemPage';
 import ErrorPage      from '../ErrorPage/ErrorPage'; 
 import ConfirmationPage from '../ConfirmationPage/ConfirmationPage';
 import './App.css';
-import {addItemToBasket} from "../../services/itemService";
+import {addItemToBasket, removeItemFromBasket} from "../../services/itemService";
 
 
 export default function App() {
   const [user, setUser] = useState(getUser());
 const [basketItems, setBasketItems]=useState([])
 
-  function handleAddToBasket(item) {
-    setBasketItems(prev => addItemToBasket(prev, item));
+function handleAddToBasket(item) {
+  setBasketItems(prev => addItemToBasket(prev, item));
 }
+function handleRemoveFromBasket(itemId) {
+  setBasketItems(prev => prev.filter(item => item._id !== itemId));
+}
+  
  useEffect(()=>{
   localStorage.setItem("basket", JSON.stringify(basketItems));
 },[basketItems])  
@@ -38,7 +42,7 @@ return (
   <Suspense fallback={<div>Loading...</div>}>
     <ClothingListPage />
   </Suspense>
-} />        <Route path="/items/:id" element={<ClothingItemPage onAdd={handleAddToBasket}/>} />
+} />        <Route path="/items/:id" element={<ClothingItemPage onAdd={handleAddToBasket} onRemove={handleRemoveFromBasket} basketItems={basketItems}/>} />
         <Route path="/basket"   element={<BasketPage user={user} items={basketItems} setBasketItems={setBasketItems} />} />
         <Route path="/checkout" element={<CheckoutPage user={user} basket={basketItems} clearBasket={()=>setBasketItems([])}/>} />
         <Route path="*" element={<ErrorPage />} />

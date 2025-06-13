@@ -62,23 +62,22 @@ orderSchema.methods.addOrUpdateItem = function (itemId, qty) {
   const row = this.items.find(it => it.productId.equals(itemId));
   row ? (row.quantity += qty) : this.items.push({ productId: itemId, quantity: qty });
 };
-orderSchema.methods.addItem = async function (itemId, qty = 1) {
-  const existing = this.items.find(it => it.productId.equals(itemId));
+orderSchema.methods.addItem = async function (itemId, itemData) {
+  const existing = this.items.find(item => item.itemId.equals(itemId));
   if (existing) {
-    existing.quantity += qty;
+    // You can optionally update quantity or do nothing
+    return this; // Already exists, do nothing
   } else {
-    const item = await mongoose.model('Item').findById(itemId);
-    if (item) {
-      this.items.push({
-        productId: item._id,
-        name: item.name,
-        price: item.price,
-        quantity: qty
-      });
-    }
+    this.items.push({
+      itemId,
+      name: itemData.name,
+      price: itemData.price,
+      quantity: 1
+    });
+    return this.save();
   }
-  await this.save();
 };
+
 orderSchema.virtual('total').get(function () {
   return this.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 });
