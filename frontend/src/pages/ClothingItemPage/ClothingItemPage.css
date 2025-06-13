@@ -1,0 +1,26 @@
+.item-page {
+  display: flex;
+  padding: 2rem;
+  background: #fdfdfb;
+  color: #222;
+  gap: 2rem;
+}
+
+.item-image {
+  max-width: 400px;
+  border-radius: 8px;
+}
+
+.item-details {
+  max-width: 600px;
+}
+
+.item-details input {
+  margin-left: 1rem;
+  width: 60px;
+}
+
+.add-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+}
