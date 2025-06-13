@@ -12,7 +12,12 @@ const orderItemSchema=new Schema({
    quantity:{
         type:Number,
       default:1},
-})
+},
+{
+    timestamps: true,
+  toJSON: { virtuals: true },   
+    toObject: { virtuals: true }, 
+  })
 
 
 const orderSchema = new Schema(
@@ -33,6 +38,8 @@ const orderSchema = new Schema(
   },
   {
     timestamps: true,
+  toJSON: { virtuals: true },   
+    toObject: { virtuals: true }, 
   }
 );
 

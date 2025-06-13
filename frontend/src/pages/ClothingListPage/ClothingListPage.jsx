@@ -1,37 +1,32 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import * as itemService from '../../services/itemService';
+import { Link, useSearchParams } from 'react-router-dom';
+import { index } from '../../services/itemService';
+import './ClothingListPage.css';
 
 export default function ClothingListPage() {
   const [items, setItems] = useState([]);
-  const [searchParams] = useSearchParams();
-
-
-  const category = searchParams.get('category') || ''; // '' means "all"
+  const [params] = useSearchParams();
+  const category=params.get("category")
 
   useEffect(() => {
-    async function fetchItems() {
-      const data = await itemService.index(category);
+    async function loadItems() {
+      const data = await index(category);
       setItems(data);
     }
-    fetchItems();
+    loadItems();
   }, [category]);
 
   return (
-    <section>
-      <h2>
-        {category ? category[0].toUpperCase() + category.slice(1) : 'All'} Items
-      </h2>
-
-      {items.length === 0 ? (
-        <p>No items in stock, come back later!.</p>
-      ) : (
-        <ul>
-          {items.map((item) => (
-            <li key={item.id}>{item.name}</li>
-          ))}
-        </ul>
-      )}
-    </section>
+    <main className="item-list">
+      {items.map(item => (
+        <Link to={`/items/${item._id}`} key={item._id} className="card">
+          <img src={item.imageURL} alt={item.name} />
+          <div className="card-info">
+            <h3>{item.name}</h3>
+            <p>${item.price.toFixed(2)}</p>
+          </div>
+        </Link>
+      ))}
+    </main>
   );
 }

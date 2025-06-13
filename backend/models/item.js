@@ -65,6 +65,13 @@ required:true,}
     type:[reviewSchema],},
  },{
     timestamps: true,
+  toJSON: { virtuals: true },   
+    toObject: { virtuals: true }, 
+  },
+  {
+    timestamps: true,
+  toJSON: { virtuals: true },   
+    toObject: { virtuals: true }, 
   }
 );
 
