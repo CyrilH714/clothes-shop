@@ -20,3 +20,6 @@ export async function index(category=""){
     const url = category ? `${BASE_URL}?category=${category}` : BASE_URL;
   return sendRequest(url);
 }
+export async function getItemById(id) {
+  return sendRequest(`${BASE_URL}/${id}`);
+}

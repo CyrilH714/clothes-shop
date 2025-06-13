@@ -1,7 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { getUser } from '../../services/authService';
 import NavBar from '../../components/NavBar/NavBar';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import HomePage from '../HomePage/HomePage';
 import LogInPage         from '../LogInPage/LogInPage';
 import SignUpPage        from '../SignUpPage/SignUpPage';
@@ -13,6 +13,8 @@ import ClothingItemPage  from '../ClothingItemPage/ClothingItemPage';
 import ErrorPage      from '../ErrorPage/ErrorPage'; 
 import ConfirmationPage from '../ConfirmationPage/ConfirmationPage';
 import './App.css';
+import {addItemToBasket} from "../../services/itemService";
+
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -20,7 +22,6 @@ const [basketItems, setBasketItems]=useState([])
 
   function handleAddToBasket(item) {
     setBasketItems(prev => addItemToBasket(prev, item));
-  setBasket()
 }
  useEffect(()=>{
   localStorage.setItem("basket", JSON.stringify(basketItems));
