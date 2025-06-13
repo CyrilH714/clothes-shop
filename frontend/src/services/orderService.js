@@ -6,3 +6,8 @@ export async function checkout(address, paymentMethod) {
     paymentMethod,
   });
 }
+export async function getOrdersByUser(userId) {
+  const res = await fetch(`/api/orders?user=${userId}`);
+  if (!res.ok) throw new Error("Failed to fetch orders");
+  return res.json();
+}

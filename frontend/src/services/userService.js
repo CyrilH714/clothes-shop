@@ -5,3 +5,12 @@ export async function updateAddress(userId, address) {
     body: JSON.stringify(address),
   }).then(r => r.json());
 }
+export async function updateUser(userId, data) {
+  const res = await fetch(`/api/users/${userId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Update failed");
+  return res.json();
+}

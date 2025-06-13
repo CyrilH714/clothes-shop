@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { signUp } from '../../services/authService';
 
 export default function SignUpPage({ setUser }) {
@@ -12,6 +12,8 @@ export default function SignUpPage({ setUser }) {
   const [errorMsg, setErrorMsg] = useState('');
    
   const navigate = useNavigate();
+  const location=useLocation();
+  const fromBasket=location.state?.fromBasket;
 
   function handleChange(evt) {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
@@ -23,7 +25,7 @@ export default function SignUpPage({ setUser }) {
     try {
       const user = await signUp(formData);
       setUser(user);
-      navigate('/items');
+      navigate(fromBasket?'/checkout':'/items');
     } catch (err) {
       setErrorMsg('Sign Up Failed - Try Again');
     }

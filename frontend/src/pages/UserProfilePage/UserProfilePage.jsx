@@ -20,13 +20,26 @@ export default function UserProfilePage({ user }) {
     }
     fetchOrders();
   }, [user.id]);
-  async function handleSave() {
-    setSaving(true);
-    await userService.updateAddress(user.id, address); // PATCH request
-    setSaving(false);
-    setSaveMsg('Address updated');        // quick feedback
-    setTimeout(() => setSaveMsg(''), 2000);
+
+  function handleChange(e) {
+  setForm({ ...form, [e.target.name]: e.target.value });
+}
+const [form, setForm] = useState({
+  name: user.name,
+  email: user.email,
+  address: user.address || {},
+  password: '',
+});
+ async function handleSave() {
+  try {
+    if (!user.id) return;
+    await updateUser(user.id, form);  // ← Write this function
+    alert('Updated!');
+  } catch (err) {
+    console.error(err);
+    alert('Failed to update');
   }
+}
   if (!user) return <p>User details not found</p>;
   return (
     <main className="profile-page">

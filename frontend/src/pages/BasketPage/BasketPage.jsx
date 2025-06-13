@@ -11,7 +11,7 @@ export default function BasketPage({user, basketItems=[], setBasketItems}) {
     if (!basketItems.length) return(<p>Basket empty</p>)
     user ?
     navigate("/CheckoutPage")
-    : navigate('/login', {state: { redirect: '/checkout' } }
+    : navigate('/login', {state: { fromBasket: true }}
     );
   }
 

@@ -13,12 +13,13 @@ export default function LogInPage({ setUser }) {
   const navigate = useNavigate();
 const location=useLocation();
 const redirect=location.state?.redirect||"ClothingItemList"
+const fromBasket = location.state?.fromBasket;
   async function handleSubmit(evt) {
     evt.preventDefault();
     try {
       const user = await authService.logIn(formData);
       setUser(user);
-      navigate('/items');
+      navigate(fromBasket?'/checkout':'/items');
     } catch (err) {
       setErrorMsg('Log In Failed - Try Again');
     }
@@ -51,7 +52,15 @@ const redirect=location.state?.redirect||"ClothingItemList"
         />
         <button type="submit">LOG IN</button>
       </form>
-     <button onClick={()=>navigate('/signup')}>New user? Sign up instead</button>
+     { fromBasket?(
+     <button onClick={()=>navigate('/signup', { state: {fromBasket:true} })}>
+      New user? Sign up instead
+      </button>
+     ):(
+       <button onClick={()=>navigate('/signup')}>
+      New user? Sign up instead
+      </button>
+      )}
       <p className="error-message">&nbsp;{errorMsg}</p>
     </>
   );
