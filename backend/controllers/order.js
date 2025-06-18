@@ -1,4 +1,4 @@
-const Order=require( "../models/Order");
+const Order=require( "../models/order");
 const Item=require( "../models/item");
 
 module.exports={addToBasket, getBasket, checkout};
