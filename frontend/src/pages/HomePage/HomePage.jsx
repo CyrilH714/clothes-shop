@@ -7,11 +7,11 @@ export default function HomePage() {
     navigate(`/items${category ? `?category=${category}` : ''}`);
   }
 const categories = [
-    { key: 'top',        label: 'Tops',        img: '/imgs/tops.jpg' },
-    { key: 'outerwear',  label: 'Outerwear',   img: '/imgs/outerwear.jpg' },
-    { key: 'skirt',      label: 'Skirts',      img: '/imgs/skirts.jpg' },
-    { key: 'dress',      label: 'Dresses',     img: '/imgs/dresses.jpg' },
-    { key: 'accessory',  label: 'Accessories', img: '/imgs/accessories.jpg' },
+    { key: 'top',        label: 'Tops',        img: "../images/tops/top_gucci.png" },
+    { key: 'outerwear',  label: 'Outerwear',   img: '../images/outerwear/outerwear_canadagoose.png' },
+    { key: 'skirt',      label: 'Skirts',      img: '../images/skirts/skirt_cd.png' },
+    { key: 'dress',      label: 'Dresses',     img: '../images/dresses/dress_prada.png' },
+    { key: 'accessory',  label: 'Accessories', img: '../images/accessories/accessory_hermes.png' },
   ];
   return (
     <main className="home">

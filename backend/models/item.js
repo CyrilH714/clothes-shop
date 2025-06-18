@@ -54,8 +54,8 @@ required: true,
 },
 condition:{
   type:String,
-    enum:["Not worn","Lightly used", "Very used"],
-    required:false,
+  enum: ['New', 'Like new', 'Gently used', 'Used', 'Worn'], 
+   required:true,
 },
 imageURL:{
     type:String,

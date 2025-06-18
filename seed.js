@@ -4,7 +4,7 @@ const Item  = require('./backend/models/item');
        
 
 
-const ddata = [
+const data = [
     {
         "name": "LV Patterned Jacket",
         "type": "outerwear",
@@ -49,7 +49,7 @@ const ddata = [
         "price": 480.00,
         "stock": 4,
         "size": "M",
-        "condition": "Worn once",
+        "condition": "Worn",
         "imageURL": "/images/skirts/skirt_lv.png",
         "reviews": [],
     },
@@ -73,7 +73,7 @@ const ddata = [
         "price": 450.00,
         "stock": 5,
         "size": "L",
-        "condition": "New",
+        "condition": "Like new",
         "imageURL": "/images/tops/top_lv.png",
         "reviews": [],
     },
@@ -85,7 +85,7 @@ const ddata = [
         "price": 980.00,
         "stock": 1,
         "size": "M",
-        "condition": "Not worn",
+        "condition": "Worn",
         "imageURL": "/images/dresses/dress_vw.png",
         "reviews": [],
     },
@@ -109,7 +109,7 @@ const ddata = [
         "price": 180.00,
         "stock": 2,
         "size": "One size",
-        "condition": "Not worn",
+        "condition": "New",
         "imageURL": "/images/accessories/accessory_hermes.png",
         "reviews": [],
     },
@@ -121,7 +121,7 @@ const ddata = [
         "price": 250.00,
         "stock": 1,
         "size": "One size",
-        "condition": "Not worn",
+        "condition": "New",
         "imageURL": "/images/accessories/accessory_hermes_2.png",
         "reviews": [],
     },
