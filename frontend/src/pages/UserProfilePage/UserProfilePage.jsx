@@ -1,46 +1,53 @@
 import { useEffect, useState } from 'react';
-import * as userService from '../../services/userService';   // mock API
-import * as orderService from '../../services/orderService'; // mock API
+import * as userService from '../../services/userService';
+import * as orderService from '../../services/orderService';
 import './UserProfilePage.css';
 
 export default function UserProfilePage({ user }) {
   const [address, setAddress] = useState({
-    street:   user?.address?.street   || '',
-    city:     user?.address?.city     || '',
+    street: user?.address?.street || '',
+    city: user?.address?.city || '',
     postcode: user?.address?.postcode || '',
-    country:  user?.address?.country  || '',
+    country: user?.address?.country || '',
   });
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
   const [orders, setOrders] = useState([]);
+
   useEffect(() => {
+    if (!user?.id) return;
     async function fetchOrders() {
-      const data = await orderService.getOrdersByUser(user.id); // mock fetch
-      setOrders(data);
+      try {
+        const data = await orderService.getOrdersByUser(user.id);
+        setOrders(data);
+      } catch (err) {
+        console.error('Error fetching orders:', err);
+      }
     }
     fetchOrders();
-  }, [user.id]);
+  }, [user?.id]);
 
-  function handleChange(e) {
-  setForm({ ...form, [e.target.name]: e.target.value });
-}
-const [form, setForm] = useState({
-  name: user.name,
-  email: user.email,
-  address: user.address || {},
-  password: '',
-});
- async function handleSave() {
-  try {
-    if (!user.id) return;
-    await updateUser(user.id, form);  // ← Write this function
-    alert('Updated!');
-  } catch (err) {
-    console.error(err);
-    alert('Failed to update');
+  async function handleSave() {
+    if (!user?.id) return;
+    setSaving(true);
+    try {
+      const updatedUser = {
+        ...user,
+        address,
+      };
+      await userService.updateUser(user.id, updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      setSaveMsg('Saved!');
+    } catch (err) {
+      console.error(err);
+      setSaveMsg('Failed to save.');
+    } finally {
+      setSaving(false);
+    }
   }
-}
+
   if (!user) return <p>User details not found</p>;
+
   return (
     <main className="profile-page">
       <h1>My Profile</h1>
@@ -49,6 +56,7 @@ const [form, setForm] = useState({
         <p><strong>Name:</strong> {user.name}</p>
         <p><strong>Email:</strong> {user.email}</p>
       </section>
+
       <section className="section">
         <h2>Shipping Address</h2>
         <div className="addr-grid">
@@ -78,6 +86,7 @@ const [form, setForm] = useState({
         </button>
         {saveMsg && <span className="msg">{saveMsg}</span>}
       </section>
+
       <section className="section">
         <h2>Past Orders</h2>
         {orders.length === 0 ? (

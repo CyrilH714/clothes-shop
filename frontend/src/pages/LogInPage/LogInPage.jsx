@@ -1,67 +1,47 @@
 import { useState } from 'react';
-import * as authService from '../../services/authService';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { logIn, storeUser } from '../../services/authService';
 
 export default function LogInPage({ setUser }) {
-  const [formData, setFormData] = useState({
-    name:'',
-    email: '',
-    password: '',
-  });
-  const [errorMsg, setErrorMsg] = useState('');
-  
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const navigate = useNavigate();
-const location=useLocation();
-const redirect=location.state?.redirect||"ClothingItemList"
-const fromBasket = location.state?.fromBasket;
-  async function handleSubmit(evt) {
-    evt.preventDefault();
+  const location = useLocation();
+const from = location.state?.from === "/basket" ? "/checkout" : "/items";
+  async function handleSubmit(e) {
+    e.preventDefault();
     try {
-      const user = await authService.logIn(formData);
+      const user = await logIn(credentials);
+      storeUser(user);
       setUser(user);
-      navigate(fromBasket?'/checkout':'/items');
+      navigate(from); // ← redirect conditionally
     } catch (err) {
-      setErrorMsg('Log In Failed - Try Again');
+      alert('Login failed');
     }
   }
 
-  function handleChange(evt) {
-    setFormData({ ...formData, [evt.target.name]: evt.target.value });
-    setErrorMsg('');
-  }
-
   return (
-    <>
-      <h2>Log In!</h2>
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <label>Email</label>
+    <main>
+      <h1>Log In</h1>
+      <form onSubmit={handleSubmit}>
         <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
+          placeholder="Email"
+          value={credentials.email}
+          onChange={e => setCredentials({ ...credentials, email: e.target.value })}
         />
-        <label>Password</label>
         <input
           type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
+          placeholder="Password"
+          value={credentials.password}
+          onChange={e => setCredentials({ ...credentials, password: e.target.value })}
         />
-        <button type="submit">LOG IN</button>
+        <button type="submit">Log In</button>
       </form>
-     { fromBasket?(
-     <button onClick={()=>navigate('/signup', { state: {fromBasket:true} })}>
-      New user? Sign up instead
-      </button>
-     ):(
-       <button onClick={()=>navigate('/signup')}>
-      New user? Sign up instead
-      </button>
-      )}
-      <p className="error-message">&nbsp;{errorMsg}</p>
-    </>
+      <p>
+        Don't have an account?{' '}
+        <Link to="/signup" state={{ from: location.state?.from }}>
+          Sign Up
+        </Link>
+      </p>
+    </main>
   );
 }

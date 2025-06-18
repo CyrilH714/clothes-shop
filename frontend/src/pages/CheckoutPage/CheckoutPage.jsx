@@ -7,7 +7,7 @@ export default function CheckoutPage({ user, basket, clearBasket }) {
   const navigate = useNavigate();
 
   const total = basket.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + item.price,
     0
   );
 
@@ -45,8 +45,8 @@ export default function CheckoutPage({ user, basket, clearBasket }) {
         <h2>Order Summary</h2>
         {basket.map(item => (
           <div key={item.id} className="row">
-            <span>{item.name} × {item.quantity}</span>
-            <span>${(item.price * item.quantity).toFixed(2)}</span>
+            <span>{item.name} </span>
+            <span>${(item.price ).toFixed(2)}</span>
           </div>
         ))}
         <div className="row total">

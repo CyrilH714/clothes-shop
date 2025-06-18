@@ -2,7 +2,7 @@ import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import { logOut } from '../../services/authService';
 import './NavBar.css';
 
-export default function NavBar({ user, setUser, basketCount }) {
+export default function NavBar({ user, setUser, basketCount, setBasketItems }) {
   const navigate = useNavigate();
   const location=useLocation();
   const path=location.pathname;
@@ -11,6 +11,9 @@ export default function NavBar({ user, setUser, basketCount }) {
   function handleLogOut() {
     logOut();
     setUser(null);
+    setBasketItems([]);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate('/');
   }
  return (
@@ -31,7 +34,7 @@ export default function NavBar({ user, setUser, basketCount }) {
             </button>
             </div>
         ) : (
-          <button className="link-btn gap" onClick={()=>navigate("/login")}>
+          <button className="link-btn gap" onClick={()=>navigate("/login", {state:{ from: "/checkout" } })}>
             Log&nbsp;In
           </button>
         )}

@@ -1,79 +1,46 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router';
-import { signUp } from '../../services/authService';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { signUp, storeUser } from '../../services/authService';
 
 export default function SignUpPage({ setUser }) {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirm: '',
-  });
-  const [errorMsg, setErrorMsg] = useState('');
-   
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const navigate = useNavigate();
-  const location=useLocation();
-  const fromBasket=location.state?.fromBasket;
-
-  function handleChange(evt) {
-    setFormData({ ...formData, [evt.target.name]: evt.target.value });
-    setErrorMsg('');
-  }
-
-  async function handleSubmit(evt) {
-    evt.preventDefault();
+  const location = useLocation();
+const from = location.state?.from === "/basket" ? "/checkout" : "/items";
+  async function handleSubmit(e) {
+    e.preventDefault();
     try {
       const user = await signUp(formData);
+      storeUser(user);
       setUser(user);
-      navigate(fromBasket?'/checkout':'/items');
+      navigate(from); // ← redirect conditionally
     } catch (err) {
-      setErrorMsg('Sign Up Failed - Try Again');
+      alert('Signup failed');
     }
   }
 
-  const disable = formData.password !== formData.confirm;
-
   return (
-    <>
-      <h2>Sign Up!</h2>
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <label>Name</label>
+    <main>
+      <h1>Sign Up</h1>
+      <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          name="name"
+          placeholder="Name"
           value={formData.name}
-          onChange={handleChange}
-          required
+          onChange={e => setFormData({ ...formData, name: e.target.value })}
         />
-        <label>Email</label>
         <input
-          type="email"
-          name="email"
+          placeholder="Email"
           value={formData.email}
-          onChange={handleChange}
-          required
+          onChange={e => setFormData({ ...formData, email: e.target.value })}
         />
-        <label>Password</label>
         <input
           type="password"
-          name="password"
+          placeholder="Password"
           value={formData.password}
-          onChange={handleChange}
-          required
+          onChange={e => setFormData({ ...formData, password: e.target.value })}
         />
-        <label>Confirm</label>
-        <input
-          type="password"
-          name="confirm"
-          value={formData.confirm}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit" disabled={disable}>
-          SIGN UP
-        </button>
+        <button type="submit">Sign Up</button>
       </form>
-      <p className="error-message">&nbsp;{errorMsg}</p>
-    </>
+    </main>
   );
 }
