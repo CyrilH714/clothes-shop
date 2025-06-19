@@ -14,7 +14,12 @@ async function logIn(req, res) {
     const match = await bcrypt.compare(req.body.password, user.password);
     if (!match) throw new Error();
     const token = createJWT(user);
-    res.json(token);
+    res.send({token,
+      user:{id: user._id,
+    name: user.name,
+    role: user.role
+  }
+   } );
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: 'Bad Credentials' });
@@ -25,18 +30,22 @@ async function signUp(req, res) {
   try {
     const user = await User.create(req.body);
     const token = createJWT(user);
-    res.json(token);
+     res.send({token,
+      user:{id: user._id,
+    name: user.name,
+    role: user.role
+  }
+   } );
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: 'Duplicate Email' });
   }
 }
 
-/*--- Helper Functions ---*/
+
 
 function createJWT(user) {
   return jwt.sign(
-    // data payload
     { user },
     process.env.SECRET,
     { expiresIn: '24h' }

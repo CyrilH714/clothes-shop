@@ -1,18 +1,29 @@
 import sendRequest from "./sendRequest";
-
+import { jwtDecode } from 'jwt-decode';
 const BASE_URL = '/api/auth';
 
+
+
+
+
 export async function signUp(userData) {
-  const token = await sendRequest(BASE_URL + '/signup', 'POST', userData);
+  const tokenObj = await sendRequest(BASE_URL + '/signup', 'POST', userData);
+  const token = typeof tokenObj === 'string' ? tokenObj : tokenObj.token; // Safe fallback
+  const user = jwtDecode(token);
   localStorage.setItem('token', token);
-  return getUser();
+  localStorage.setItem('user', JSON.stringify(user.user)); 
+  return user.user;
 }
 
 export async function logIn(credentials) {
-  const token = await sendRequest(`${BASE_URL}/login`, 'POST', credentials);
+  const tokenObj = await sendRequest(`${BASE_URL}/login`, 'POST', credentials);
+  const token = typeof tokenObj === 'string' ? tokenObj : tokenObj.token;
+  const user = jwtDecode(token);
   localStorage.setItem('token', token);
-  return getUser();
+  localStorage.setItem('user', JSON.stringify(user.user)); 
+  return user.user;
 }
+
 
 export function getUser() {
   const token = getToken();

@@ -28,3 +28,14 @@ export async function getItemById(id) {
 export const removeItemFromBasket = (basket, itemId) => {
   return basket.filter(item => item.id !== itemId);
 };
+export function createItem(data) {
+  return sendRequest('/api/items', 'POST', data);
+}
+
+export function updateItem(data, id) {
+  return sendRequest(`/api/items/${id}`, 'PUT', data);
+}
+
+export function deleteItem(id) {
+  return sendRequest(`/api/items/${id}`, 'DELETE');
+}

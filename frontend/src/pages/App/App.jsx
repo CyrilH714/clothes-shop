@@ -12,9 +12,8 @@ import ClothingItemPage from '../ClothingItemPage/ClothingItemPage';
 import ConfirmationPage from '../ConfirmationPage/ConfirmationPage';
 import ErrorPage from '../ErrorPage/ErrorPage';
 const ClothingListPage = lazy(() => import('../ClothingListPage/ClothingListPage'));
-
+import AdminDashboardPage from '../AdminDashboardPage/AdminDashboardPage';
 import './App.css';
-import { getUser, storeUser } from '../../services/authService';
 import { addItemToBasket, removeItemFromBasket } from '../../services/itemService';
 
 export default function App() {
@@ -22,7 +21,6 @@ export default function App() {
   const [basketItems, setBasketItems] = useState([]);
   const location = useLocation();
 
-  // === Basket Storage Helpers ===
   const saveBasketForUser = (userId, basket) => {
     localStorage.setItem(`basket_${userId}`, JSON.stringify(basket));
   };
@@ -44,7 +42,6 @@ export default function App() {
     else localStorage.removeItem('anon_basket');
   };
 
-  // === Merge baskets on login ===
   const mergeBaskets = (existing, incoming) => {
     const map = new Map();
     for (const item of [...existing, ...incoming]) {
@@ -59,7 +56,6 @@ export default function App() {
     return Array.from(map.values());
   };
 
-  // === Load Basket from Storage ===
  useEffect(() => {
   const savedUser = JSON.parse(localStorage.getItem('user'));
   if (savedUser) {
@@ -72,7 +68,6 @@ export default function App() {
   }
 }, []);
 
-  // === Save to Storage on Basket Change ===
   useEffect(() => {
     if (user?.id) {
       saveBasketForUser(user.id, basketItems);
@@ -81,15 +76,12 @@ export default function App() {
     }
   }, [basketItems, user]);
 
-  // === Handle User Login/Signup ===
   function handleSetUser(userObj) {
   setUser(userObj);
 
-  // Persist token + user info
   localStorage.setItem('user', JSON.stringify(userObj));
   localStorage.removeItem('anon_basket');
 
-  // Fetch basket from backend
   if (userObj?.id) {
     fetchBasketFromServer()
       .then(serverBasket => {
@@ -103,15 +95,13 @@ export default function App() {
       });
   }
 }
-  // === Handle Basket Actions ===
 function handleAddToBasket(item) {
   const updated = addItemToBasket(basketItems, item);
   setBasketItems(updated);
 
   if (user?.id) {
     localStorage.setItem(`basket_${user.id}`, JSON.stringify(updated));
-    // Optionally send to server
-    addToBasket(item.id); // backend will dedupe
+    addToBasket(item.id); 
   } else {
     localStorage.setItem('anon_basket', JSON.stringify(updated));
   }
@@ -123,7 +113,6 @@ function handleRemoveFromBasket(itemId) {
 
   if (user?.id) {
     localStorage.setItem(`basket_${user.id}`, JSON.stringify(updated));
-    // Optionally call API to remove
   } else {
     localStorage.setItem('anon_basket', JSON.stringify(updated));
   }
@@ -180,6 +169,16 @@ function handleRemoveFromBasket(itemId) {
             />
           }
         />
+        <Route
+  path="/admin"
+  element={
+    user?.role === 'admin' ? (
+      <AdminDashboardPage />
+    ) : (
+      <ErrorPage />
+    )
+  }
+/>
         <Route
           path="/checkout"
           element={

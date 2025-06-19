@@ -14,9 +14,10 @@ const from = location.state?.from === "/basket" ? "/checkout" : "/items";
       storeUser(user);
       setUser(user);
       navigate(from); 
-      alert('Signup failed');
+
     } catch(err){
       console.log(err);
+      alert('Signup failed');
     }
   }
 

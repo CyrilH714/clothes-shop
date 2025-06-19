@@ -19,12 +19,15 @@ export default function NavBar({ user, setUser, basketCount, setBasketItems }) {
   setBasketItems([]);
   localStorage.removeItem("token");
   localStorage.removeItem("user");
-  localStorage.removeItem("basket_${user?.id}")
+  localStorage.removeItem(`basket_${user?.id}`)
   navigate('/');
 }
  return (
     <nav className="nav">
       <div className="left">
+        {user?.role === 'admin' && (
+  <NavLink className="link" to="/admin">Admin</NavLink>
+)}
         {!isHome && (
         <NavLink className="link gap" to="/">
           Home

@@ -19,7 +19,7 @@ export default function CheckoutPage({ user, basket, clearBasket }) {
     country:  user?.address?.country  || '',
   });
 
-  const [payment, setPayment] = useState(''); // e.g. 'card' or 'paypal'
+  const [payment, setPayment] = useState(''); 
   const [processing, setProcessing] = useState(false);
   const [error, setError]= useState('');
 
