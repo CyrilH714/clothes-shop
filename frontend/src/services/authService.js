@@ -10,6 +10,7 @@ export async function signUp(userData) {
   const tokenObj = await sendRequest(BASE_URL + '/signup', 'POST', userData);
   const token = typeof tokenObj === 'string' ? tokenObj : tokenObj.token; // Safe fallback
   const user = jwtDecode(token);
+  console.log("Decoded user:", user);
   localStorage.setItem('token', token);
   localStorage.setItem('user', JSON.stringify(user.user)); 
   return user.user;
@@ -19,6 +20,7 @@ export async function logIn(credentials) {
   const tokenObj = await sendRequest(`${BASE_URL}/login`, 'POST', credentials);
   const token = typeof tokenObj === 'string' ? tokenObj : tokenObj.token;
   const user = jwtDecode(token);
+  console.log("Decoded user:", user);
   localStorage.setItem('token', token);
   localStorage.setItem('user', JSON.stringify(user.user)); 
   return user.user;

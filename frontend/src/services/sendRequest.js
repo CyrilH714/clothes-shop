@@ -3,6 +3,11 @@ import { getToken } from './authService';
 export default async function sendRequest(url, method = 'GET', payload = null) {
   const options = { method, headers: {} };
 
+  const token = getToken();
+  if (token) {
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
+
   if (payload) {
     options.headers['Content-Type'] = 'application/json';
     options.body = JSON.stringify(payload);

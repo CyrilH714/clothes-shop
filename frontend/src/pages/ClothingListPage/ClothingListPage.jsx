@@ -27,6 +27,7 @@ export default function ClothingListPage() {
   useEffect(() => {
     const filtered = items.filter(item => {
       return (
+        item.show &&
         (!search || item.name.toLowerCase().includes(search.toLowerCase())) &&
         (!type || item.type === type) &&
         (!brand || item.brand === brand) &&

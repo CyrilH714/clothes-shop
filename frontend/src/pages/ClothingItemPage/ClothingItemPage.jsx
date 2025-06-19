@@ -2,21 +2,32 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getItemById } from '../../services/itemService';
 import './ClothingItemPage.css';
-
-
+import { useNavigate } from 'react-router-dom';
+import ErrorPage from '../ErrorPage/ErrorPage';
 export default function ClothingItemPage({ basketItems, onAdd, onRemove }) {
   const { id } = useParams();
   const [item, setItem] = useState(null);
 
+const inBasket = basketItems.some(basketItem => basketItem._id === id);
+const navigate=useNavigate();
+
   useEffect(() => {
     async function fetchItem() {
+      try{
       const fetched = await getItemById(id);
+      if (!fetched||fetched.show===false){
+        navigate('/error');
+      }else{
       setItem(fetched);
-    }
+    }}
+    catch(err){
+      console.error('item not found,',err);
+      navigate('/error');
+    }finally{
+      setLoading(false)
+    }}
     fetchItem();
-  }, [id]);
-
-  const inBasket = basketItems.some(basketItem => basketItem._id === id);
+  }, [id,navigate]);
 
   function handleToggleBasketItem() {
     if (!item) return;

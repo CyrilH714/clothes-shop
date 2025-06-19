@@ -13,8 +13,11 @@ const from = location.state?.from === "/basket" ? "/checkout" : "/items";
       const user = await logIn(credentials);
       storeUser(user);
       setUser(user);
+      if (user?.role === 'admin') {
+      navigate("/admin");
+    } else {
       navigate(from);
-    } catch (err) {
+    }} catch (err) {
       alert('Login failed');
     }
   }

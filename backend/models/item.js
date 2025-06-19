@@ -44,9 +44,9 @@ required: true,
         type:Number,
         required: true,
   },
-  stock:{
-    type:Number,
-    required:true,
+  show:{
+    type:Boolean,
+    default:true,
   },
   size:{
     type:String,

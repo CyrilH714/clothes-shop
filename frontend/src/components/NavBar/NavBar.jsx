@@ -26,7 +26,7 @@ export default function NavBar({ user, setUser, basketCount, setBasketItems }) {
     <nav className="nav">
       <div className="left">
         {user?.role === 'admin' && (
-  <NavLink className="link" to="/admin">Admin</NavLink>
+  <NavLink className="link" to="/admin">Admin dashboard</NavLink>
 )}
         {!isHome && (
         <NavLink className="link gap" to="/">

@@ -1,5 +1,6 @@
 const Item = require("../models/item");
 exports.createItem = async (req, res) => {
+  console.log("received item:", req.body);
   try {
     const item = await Item.create(req.body);
     res.status(201).json(item);
