@@ -13,11 +13,11 @@ async function seedAdmin() {
     return process.exit();
   }
 
-  const hashedPassword = await bcrypt.hash('admin123', 6);
+  
   const adminUser = new User({
     name: 'Admin',
     email: 'admin@control.com',
-    password: hashedPassword,
+    password: "admin123",
     role: 'admin'
   });
 
