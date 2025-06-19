@@ -13,7 +13,7 @@ const from = location.state?.from === "/basket" ? "/checkout" : "/items";
       const user = await logIn(credentials);
       storeUser(user);
       setUser(user);
-      navigate(from); // ← redirect conditionally
+      navigate(from);
     } catch (err) {
       alert('Login failed');
     }

@@ -9,13 +9,19 @@ export default function NavBar({ user, setUser, basketCount, setBasketItems }) {
   const isHome=path==="/";
   const isBasket=path==='/basket';
   function handleLogOut() {
-    logOut();
-    setUser(null);
-    setBasketItems([]);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate('/');
+  logOut();
+  if (user?.id) {
+    localStorage.removeItem(`basket_${user.id}`);
+  } else {
+    localStorage.removeItem('anon_basket');
   }
+  setUser(null);
+  setBasketItems([]);
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  localStorage.removeItem("basket_${user?.id}")
+  navigate('/');
+}
  return (
     <nav className="nav">
       <div className="left">

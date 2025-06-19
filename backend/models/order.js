@@ -44,10 +44,10 @@ const orderSchema = new Schema(
 );
 
 orderSchema.statics.getBasket=async function (userId){
-  let basket=await this.findOne({user:userid, paid:false});
-  if (!basket){
-    basket=await this.create({user:userId, items:[], total:0})
-  }
+  let basket = await this.findOne({ buyerId: userId, paid: false });
+if (!basket) {
+  basket = await this.create({ buyerId: userId, items: [], totalItemsCost: 0 });
+}
   return basket;
 }
 orderSchema.methods.calculateTotal=function(){
@@ -56,17 +56,15 @@ orderSchema.methods.calculateTotal=function(){
     return this.total;
 }
 orderSchema.virtual("itemCount").get(function(){
-  return this.items.reduce((sum,item)=>sm+item.quantity,0)
+  return this.items.reduce((sum,item)=>sum+item.quantity,0)
 })
 orderSchema.methods.addOrUpdateItem = function (itemId, qty) {
-  const row = this.items.find(it => it.productId.equals(itemId));
-  row ? (row.quantity += qty) : this.items.push({ productId: itemId, quantity: qty });
+const row = this.items.find(it => it.itemId.equals(itemId));  row ? (row.quantity += qty) : this.items.push({ productId: itemId, quantity: qty });
 };
 orderSchema.methods.addItem = async function (itemId, itemData) {
   const existing = this.items.find(item => item.itemId.equals(itemId));
   if (existing) {
-    // You can optionally update quantity or do nothing
-    return this; // Already exists, do nothing
+    return this; 
   } else {
     this.items.push({
       itemId,

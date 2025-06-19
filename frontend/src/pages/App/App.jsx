@@ -1,6 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { fetchBasketFromServer } from '../../services/itemService';
 import NavBar from '../../components/NavBar/NavBar';
 import HomePage from '../HomePage/HomePage';
 import LogInPage from '../LogInPage/LogInPage';
@@ -11,76 +11,147 @@ import CheckoutPage from '../CheckoutPage/CheckoutPage';
 import ClothingItemPage from '../ClothingItemPage/ClothingItemPage';
 import ConfirmationPage from '../ConfirmationPage/ConfirmationPage';
 import ErrorPage from '../ErrorPage/ErrorPage';
-
 const ClothingListPage = lazy(() => import('../ClothingListPage/ClothingListPage'));
 
 import './App.css';
+import { getUser, storeUser } from '../../services/authService';
 import { addItemToBasket, removeItemFromBasket } from '../../services/itemService';
-import { getUser } from '../../services/authService';
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [basketItems, setBasketItems] = useState([]);
-  const navigate = useNavigate();
+  const location = useLocation();
 
-  // Load user and basket on mount
-  useEffect(() => {
-    const storedUser = getUser();
-    if (storedUser) {
-      setUser(storedUser);
-      const userBasket = JSON.parse(localStorage.getItem(`basket_${storedUser.id}`)) || [];
-      setBasketItems(userBasket);
-    } else {
-      const anonBasket = JSON.parse(localStorage.getItem('basket')) || [];
-      setBasketItems(anonBasket);
+  // === Basket Storage Helpers ===
+  const saveBasketForUser = (userId, basket) => {
+    localStorage.setItem(`basket_${userId}`, JSON.stringify(basket));
+  };
+
+  const getBasketForUser = (userId) => {
+    return JSON.parse(localStorage.getItem(`basket_${userId}`)) || [];
+  };
+
+  const getAnonBasket = () => {
+    return JSON.parse(localStorage.getItem('anon_basket')) || [];
+  };
+
+  const saveAnonBasket = (basket) => {
+    localStorage.setItem('anon_basket', JSON.stringify(basket));
+  };
+
+  const clearBasketStorage = (userId) => {
+    if (userId) localStorage.removeItem(`basket_${userId}`);
+    else localStorage.removeItem('anon_basket');
+  };
+
+  // === Merge baskets on login ===
+  const mergeBaskets = (existing, incoming) => {
+    const map = new Map();
+    for (const item of [...existing, ...incoming]) {
+      if (map.has(item.id)) {
+        const stored = map.get(item.id);
+        stored.quantity = (stored.quantity || 1) + (item.quantity || 1);
+        map.set(item.id, stored);
+      } else {
+        map.set(item.id, { ...item, quantity: item.quantity || 1 });
+      }
     }
-  }, []);
+    return Array.from(map.values());
+  };
 
-  // Save basket to localStorage whenever it changes
+  // === Load Basket from Storage ===
+ useEffect(() => {
+  const savedUser = JSON.parse(localStorage.getItem('user'));
+  if (savedUser) {
+    setUser(savedUser);
+    const storedBasket = JSON.parse(localStorage.getItem(`basket_${savedUser.id}`)) || [];
+    setBasketItems(storedBasket);
+  } else {
+    const anonBasket = JSON.parse(localStorage.getItem('anon_basket')) || [];
+    setBasketItems(anonBasket);
+  }
+}, []);
+
+  // === Save to Storage on Basket Change ===
   useEffect(() => {
-    if (user && user.id) {
-      localStorage.setItem(`basket_${user.id}`, JSON.stringify(basketItems));
+    if (user?.id) {
+      saveBasketForUser(user.id, basketItems);
     } else {
-      localStorage.setItem('basket', JSON.stringify(basketItems));
+      saveAnonBasket(basketItems);
     }
   }, [basketItems, user]);
 
+  // === Handle User Login/Signup ===
   function handleSetUser(userObj) {
-    if (userObj) {
-      setUser(userObj);
-      const saved = JSON.parse(localStorage.getItem(`basket_${userObj.id}`)) || [];
-      setBasketItems(saved);
-    } else {
-      if (user?.id) {
-        localStorage.removeItem(`basket_${user.id}`);
-      }
-      setUser(null);
-      setBasketItems([]);
-    }
-  }
+  setUser(userObj);
 
-  function handleAddToBasket(item) {
-    setBasketItems(prev => addItemToBasket(prev, item));
-  }
+  // Persist token + user info
+  localStorage.setItem('user', JSON.stringify(userObj));
+  localStorage.removeItem('anon_basket');
 
-  function handleRemoveFromBasket(itemId) {
-    setBasketItems(prev => removeItemFromBasket(prev, itemId));
+  // Fetch basket from backend
+  if (userObj?.id) {
+    fetchBasketFromServer()
+      .then(serverBasket => {
+        const items = serverBasket?.items || [];
+        setBasketItems(items);
+        localStorage.setItem(`basket_${userObj.id}`, JSON.stringify(items));
+      })
+      .catch(err => {
+        console.error("Error fetching server-side basket:", err);
+        setBasketItems([]);
+      });
   }
+}
+  // === Handle Basket Actions ===
+function handleAddToBasket(item) {
+  const updated = addItemToBasket(basketItems, item);
+  setBasketItems(updated);
+
+  if (user?.id) {
+    localStorage.setItem(`basket_${user.id}`, JSON.stringify(updated));
+    // Optionally send to server
+    addToBasket(item.id); // backend will dedupe
+  } else {
+    localStorage.setItem('anon_basket', JSON.stringify(updated));
+  }
+}
+
+function handleRemoveFromBasket(itemId) {
+  const updated = removeItemFromBasket(basketItems, itemId);
+  setBasketItems(updated);
+
+  if (user?.id) {
+    localStorage.setItem(`basket_${user.id}`, JSON.stringify(updated));
+    // Optionally call API to remove
+  } else {
+    localStorage.setItem('anon_basket', JSON.stringify(updated));
+  }
+}
+
+
+  const handleClearBasket = () => {
+    setBasketItems([]);
+    if (user?.id) clearBasketStorage(user.id);
+    else clearBasketStorage(null);
+  };
 
   return (
     <>
       <NavBar
         user={user}
-        setUser={handleSetUser}
+        setUser={(u) => {
+          setUser(u);
+          if (!u) handleClearBasket();
+        }}
         basketCount={basketItems.length}
         setBasketItems={setBasketItems}
       />
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LogInPage setUser={handleSetUser} />} />
         <Route path="/signup" element={<SignUpPage setUser={handleSetUser} />} />
-        <Route path="/profile" element={<UserProfilePage user={user} setUser={handleSetUser} />} />
+        <Route path="/profile" element={<UserProfilePage user={user} />} />
         <Route
           path="/items"
           element={
@@ -115,7 +186,7 @@ export default function App() {
             <CheckoutPage
               user={user}
               basket={basketItems}
-              clearBasket={() => setBasketItems([])}
+              clearBasket={handleClearBasket}
             />
           }
         />

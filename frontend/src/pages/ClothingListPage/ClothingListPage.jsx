@@ -9,7 +9,6 @@ export default function ClothingListPage() {
   const [params] = useSearchParams();
   const category = params.get("category");
 
-  // Filters
   const [search, setSearch] = useState('');
   const [type, setType] = useState('');
   const [brand, setBrand] = useState('');

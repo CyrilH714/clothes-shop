@@ -13,9 +13,10 @@ const from = location.state?.from === "/basket" ? "/checkout" : "/items";
       const user = await signUp(formData);
       storeUser(user);
       setUser(user);
-      navigate(from); // ← redirect conditionally
-    } catch (err) {
+      navigate(from); 
       alert('Signup failed');
+    } catch(err){
+      console.log(err);
     }
   }
 

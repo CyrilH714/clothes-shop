@@ -11,9 +11,10 @@ export const addItemToBasket= (basket, newItem)=>{
   return [...basket, newItem];
 };
 
-export async function addToBasket(itemId, qty = 1) {
-  return sendRequest('/api/orders/basket/add', 'POST', { itemId, qty });
+export async function fetchBasketFromServer() {
+  return sendRequest('/api/orders/basket');
 }
+
 
 export async function index(category=""){
 
