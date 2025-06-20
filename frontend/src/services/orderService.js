@@ -11,3 +11,7 @@ export async function getOrdersByUser(userId) {
   if (!res.ok) throw new Error("Failed to fetch orders");
   return res.json();
 }
+export async function addToBasket(itemId, qty=1) {
+  console.log(" Sending POST to /api/orders/add with", itemId);
+  return sendRequest('/api/orders/add', 'POST', { itemId,qty });
+}

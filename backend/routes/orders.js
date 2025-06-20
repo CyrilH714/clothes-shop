@@ -5,8 +5,9 @@ const orderCtrl = require('../controllers/order');
 
 router.use(ensureLoggedIn);
 
+
 router.get('/basket', orderCtrl.getBasket);
-router.post('/basket/add', orderCtrl.addToBasket);
+router.post('/add', orderCtrl.addToBasket);
 router.post('/checkout', orderCtrl.checkout);
 
 module.exports = router;

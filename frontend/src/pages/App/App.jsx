@@ -15,7 +15,8 @@ const ClothingListPage = lazy(() => import('../ClothingListPage/ClothingListPage
 import AdminDashboardPage from '../AdminDashboardPage/AdminDashboardPage';
 import './App.css';
 import { addItemToBasket, removeItemFromBasket } from '../../services/itemService';
-
+import { addToBasket } from '../../services/orderService';
+console.log("🧪 addToBasket from orderService:", addToBasket);
 export default function App() {
   const [user, setUser] = useState(null);
   const [basketItems, setBasketItems] = useState([]);
@@ -76,33 +77,49 @@ export default function App() {
     }
   }, [basketItems, user]);
 
-  function handleSetUser(userObj) {
+  async function handleSetUser(userObj) {
   setUser(userObj);
-
   localStorage.setItem('user', JSON.stringify(userObj));
+
+  if (!userObj?.id) return;
+
+  const anonBasket = getAnonBasket();
   localStorage.removeItem('anon_basket');
 
-  if (userObj?.id) {
-    fetchBasketFromServer()
-      .then(serverBasket => {
-        const items = serverBasket?.items || [];
-        setBasketItems(items);
-        localStorage.setItem(`basket_${userObj.id}`, JSON.stringify(items));
-      })
-      .catch(err => {
-        console.error("Error fetching server-side basket:", err);
-        setBasketItems([]);
-      });
+  let serverBasket = [];
+  try {
+    const result = await fetchBasketFromServer();
+    serverBasket = result?.items || [];
+  } catch (err) {
+    console.error("Error fetching server-side basket:", err);
+  }
+
+  const merged = mergeBaskets(serverBasket, anonBasket);
+  setBasketItems(merged);
+  saveBasketForUser(userObj.id, merged);
+
+  for (const item of anonBasket) {
+    try {
+      console.log("Calling addToBasket", item)
+      await addToBasket(item._id, 1);  
+    } catch (err) {
+      console.error("Failed to sync item to backend:", item, err);
+    }
   }
 }
-function handleAddToBasket(item) {
+
+async function handleAddToBasket(item) {
+  console.log("handleAddToBasket called", item);
+
   const updated = addItemToBasket(basketItems, item);
   setBasketItems(updated);
 
-  if (user?.id) {
-    localStorage.setItem(`basket_${user.id}`, JSON.stringify(updated));
-    addToBasket(item.id); 
+  if (user?._id) {
+    console.log("Before addToBasket POST", item._id);
+    await addToBasket(item._id, 1);
+    console.log("After addToBasket POST");
   } else {
+    console.log("Saving to anon basket");
     localStorage.setItem('anon_basket', JSON.stringify(updated));
   }
 }

@@ -59,20 +59,21 @@ orderSchema.virtual("itemCount").get(function(){
   return this.items.reduce((sum,item)=>sum+item.quantity,0)
 })
 orderSchema.methods.addOrUpdateItem = function (itemId, qty) {
-const row = this.items.find(it => it.itemId.equals(itemId));  row ? (row.quantity += qty) : this.items.push({ productId: itemId, quantity: qty });
+const row = this.items.find(it => it.itemId.equals(itemId));  row ? (row.quantity += qty) : this.items.push({ itemId: itemId, quantity: qty });
 };
-orderSchema.methods.addItem = async function (itemId, itemData) {
+orderSchema.methods.addItem = async function (itemId, itemData, qty=1) {
   const existing = this.items.find(item => item.itemId.equals(itemId));
   if (existing) {
-    return this; 
+    existing.quantity += qty;
   } else {
     this.items.push({
       itemId,
       name: itemData.name,
       price: itemData.price,
-      quantity: 1
+      quantity: qty
     });
-    return this.save();
+    await this.save();
+    return this;
   }
 };
 

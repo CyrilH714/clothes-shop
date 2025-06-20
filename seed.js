@@ -132,7 +132,10 @@ async function seedDB() {
       throw new Error("MONGODB_URI is not defined in your .env file");
     }
     await mongoose.connect(process.env.MONGODB_URI);
-    await Item.deleteMany({});
+    const count=await Item.countDocuments();
+    if (count===0){
+        await Item.insertMany(seedItems);
+    }
     const items = await Item.insertMany(data);
     console.log(`Seeded ${items.length} items`);
     process.exit();

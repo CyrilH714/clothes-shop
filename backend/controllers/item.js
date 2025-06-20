@@ -5,7 +5,8 @@ exports.createItem = async (req, res) => {
     const item = await Item.create(req.body);
     res.status(201).json(item);
   } catch (err) {
-    res.status(400).json({ error: 'Create failed' });
+    console.error("Create item error:", err.message);  // ✅ Add error details
+    res.status(400).json({ error: 'Create failed', details: err.message });
   }
 };
 
@@ -28,9 +29,16 @@ exports.deleteItem = async (req, res) => {
 };
 exports.index = async (req, res) => {
   try {
-    const items = await Item.find({});
+    const query = { show: true };
+
+    if (req.query.category) {
+      query.type = req.query.category;
+    }
+
+    const items = await Item.find(query);
     res.json(items);
   } catch (err) {
+    console.error("Error fetching items:", err); // ✅ See real error
     res.status(500).json({ error: 'Failed to fetch items' });
   }
 };

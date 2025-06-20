@@ -99,15 +99,15 @@ export default function UserProfilePage({ user }) {
               </tr>
             </thead>
             <tbody>
-              {orders.map(ord => (
-                <tr key={ord.id}>
-                  <td>{ord.id}</td>
-                  <td>{new Date(ord.date).toLocaleDateString()}</td>
-                  <td>${ord.total.toFixed(2)}</td>
-                  <td>{ord.status}</td>
-                </tr>
-              ))}
-            </tbody>
+  {orders.map(ord => (
+    <tr key={ord._id}>
+      <td>{ord._id.slice(-6)}</td>
+      <td>{new Date(ord.updatedAt).toLocaleDateString()}</td>
+      <td>${ord.total.toFixed(2)}</td>
+      <td>{ord.paid ? "Paid" : "Pending"}</td>
+    </tr>
+  ))}
+</tbody>
           </table>
         )}
       </section>

@@ -23,8 +23,6 @@ const navigate=useNavigate();
     catch(err){
       console.error('item not found,',err);
       navigate('/error');
-    }finally{
-      setLoading(false)
     }}
     fetchItem();
   }, [id,navigate]);
@@ -32,8 +30,10 @@ const navigate=useNavigate();
   function handleToggleBasketItem() {
     if (!item) return;
     if (inBasket) {
+      console.log("🛒 Button clicked!", item);
       onRemove(item._id);
     } else {
+      console.log("🛒 Button clicked!", item);
       onAdd(item);
     }
   }
@@ -51,7 +51,7 @@ const navigate=useNavigate();
         <p><strong>Condition:</strong> {item.condition}</p>
         <p>{item.about}</p>
         <p className="price">${item.price.toFixed(2)}</p>
-<button onClick={() => handleToggleBasketItem(item)}>
+<button onClick={handleToggleBasketItem}>
   {inBasket ? 'Remove from Basket' : 'Add to Basket'}
 </button>
       </section>

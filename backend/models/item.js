@@ -75,9 +75,7 @@ required:true,}
   }
 );
 
-itemSchema.virtual("isAvailable").get(function(){
-  return this.stock>0;
-})
+
 itemSchema.methods.decrementStock=function (qty=1){
   this.sick=Math.max(0,this.stock-qty);
   return this.save();
