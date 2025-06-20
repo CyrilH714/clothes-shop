@@ -8,7 +8,7 @@ const BASE_URL = '/api/auth';
 
 export async function signUp(userData) {
   const tokenObj = await sendRequest(BASE_URL + '/signup', 'POST', userData);
-  const token = typeof tokenObj === 'string' ? tokenObj : tokenObj.token; // Safe fallback
+  const token = typeof tokenObj === 'string' ? tokenObj : tokenObj.token; 
   const user = jwtDecode(token);
   console.log("Decoded user:", user);
   localStorage.setItem('token', token);

@@ -7,6 +7,7 @@ module.exports = {
   addToBasket,
   getBasket,
   checkout,
+  removeFromBasket
 };
 
 async function getBasket(req, res) {
@@ -46,6 +47,26 @@ async function addToBasket(req, res) {
     res.status(500).json({ error: "Failed to add to basket" });
   }
 }
+async function removeFromBasket(req, res) {
+  let basket;
+  try {
+    const { itemId } = req.body; 
+
+     basket = await Order.getBasket(req.user._id);
+    const index = basket.items.findIndex(item => item.itemId.equals(itemId));
+    
+    if (index > -1) {
+      basket.items.splice(index, 1);
+      await basket.calculateTotal();
+      await basket.save();
+    }
+
+    res.status(200).json({ msg: 'Item removed', items: basket.items });
+  } catch (err) {
+    console.error("Error removing from basket:", err);
+    res.status(500).json({ error: "Failed to remove from basket" });
+  }
+}
 
 async function checkout(req, res) {
   let basket;
@@ -59,7 +80,7 @@ async function checkout(req, res) {
       return res.status(400).json({ msg: "Basket is empty" });
     }
 
-    // Mark as paid
+    
     basket.paid = true;
     await basket.calculateTotal();
     await basket.save();

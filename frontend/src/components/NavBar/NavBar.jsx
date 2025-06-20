@@ -30,13 +30,16 @@ export default function NavBar({ user, setUser, basketCount, setBasketItems }) {
 )}
         {!isHome && (
         <NavLink className="link gap" to="/">
-          Home
+          <button className="home-btn">
+          🏠 
+</button>
         </NavLink>
         )}
         {user ? (
           <div>
-          <NavLink className="link" to="/profile">
             Welcome, {user.name}
+          <NavLink className="link" to="/profile">
+             <button className="profile-btn">View Profile</button>
           </NavLink>
           <button className='link-btn gap' onClick={handleLogOut}>
             log&nbsp;Out
@@ -49,7 +52,9 @@ export default function NavBar({ user, setUser, basketCount, setBasketItems }) {
         )}
       </div>
       <div className="middle">
-        <NavLink className='link' to='/items'>See clothes</NavLink>
+       <button className="btn-clothes" onClick={() => navigate('/items')}>
+            See Catalogue
+          </button>
       </div>
       <div className="right">
 {!isBasket && (

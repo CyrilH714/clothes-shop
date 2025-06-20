@@ -16,7 +16,9 @@ import AdminDashboardPage from '../AdminDashboardPage/AdminDashboardPage';
 import './App.css';
 import { addItemToBasket, removeItemFromBasket } from '../../services/itemService';
 import { addToBasket } from '../../services/orderService';
-console.log("🧪 addToBasket from orderService:", addToBasket);
+import { removeFromBasket } from '../../services/orderService'; 
+
+console.log("addToBasket from orderService:", addToBasket);
 export default function App() {
   const [user, setUser] = useState(null);
   const [basketItems, setBasketItems] = useState([]);
@@ -124,16 +126,28 @@ async function handleAddToBasket(item) {
   }
 }
 
-function handleRemoveFromBasket(itemId) {
+
+async function handleRemoveFromBasket(itemId) {
+  console.log("🗑️ handleRemoveFromBasket called with", itemId);
+
   const updated = removeItemFromBasket(basketItems, itemId);
+  console.log("✅ Updated basket after removal:", updated);
   setBasketItems(updated);
 
   if (user?.id) {
     localStorage.setItem(`basket_${user.id}`, JSON.stringify(updated));
+
+    try {
+      console.log("📡 Calling backend removeFromBasket", itemId);
+      await removeFromBasket(itemId); 
+    } catch (err) {
+      console.error("❌ Failed to remove from backend:", err);
+    }
   } else {
     localStorage.setItem('anon_basket', JSON.stringify(updated));
   }
 }
+
 
 
   const handleClearBasket = () => {

@@ -15,3 +15,9 @@ export async function addToBasket(itemId, qty=1) {
   console.log(" Sending POST to /api/orders/add with", itemId);
   return sendRequest('/api/orders/add', 'POST', { itemId,qty });
 }
+export async function removeFromBasket(itemId, qty=1){
+  console.log("sending delete request with", itemId);  
+    return sendRequest('/api/orders/remove', 'DELETE', { itemId,qty });
+
+
+}

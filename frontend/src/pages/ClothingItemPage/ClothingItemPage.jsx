@@ -29,11 +29,12 @@ const navigate=useNavigate();
 
   function handleToggleBasketItem() {
     if (!item) return;
+    console.log("🛒 Button clicked!", item);
     if (inBasket) {
-      console.log("🛒 Button clicked!", item);
+       console.log("Removing:", item);
       onRemove(item._id);
     } else {
-      console.log("🛒 Button clicked!", item);
+      console.log("adding!", item);
       onAdd(item);
     }
   }
