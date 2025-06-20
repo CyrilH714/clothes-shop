@@ -30,3 +30,19 @@
 .card-info {
   padding: 0.75rem;
 }
+.filters {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.filters:hover,
+.filters:focus {
+  border-color: var(--accent);
+  outline: none;
+}

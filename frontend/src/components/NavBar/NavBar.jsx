@@ -42,7 +42,7 @@ export default function NavBar({ user, setUser, basketCount, setBasketItems }) {
              <button className="profile-btn">View Profile</button>
           </NavLink>
           <button className='link-btn gap' onClick={handleLogOut}>
-            log&nbsp;Out
+            Log Out
             </button>
             </div>
         ) : (

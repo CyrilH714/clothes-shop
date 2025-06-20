@@ -5,6 +5,7 @@ A full-stack e-commerce web app where users can browse, view, and purchase cloth
 
 🌐 **Live Site**: [View Factory Fashion here](https://clothes-shop-22faadb6c38b.herokuapp.com/)
 
+![Homepage Screenshot](public/images/screenshot.png)
 ---
 
 ## ✨ Features
