@@ -46,12 +46,12 @@ const navigate=useNavigate();
       <img src={item.imageURL} alt={item.name} className="item-image" />
       <section className="item-details">
         <h1>{item.name}</h1>
+        <p className="price">${item.price.toFixed(2)}</p>
         <p><strong>Brand:</strong> {item.brand}</p>
         <p><strong>Type:</strong> {item.type}</p>
         <p><strong>Size:</strong> {item.size}</p>
         <p><strong>Condition:</strong> {item.condition}</p>
         <p>{item.about}</p>
-        <p className="price">${item.price.toFixed(2)}</p>
 <button onClick={handleToggleBasketItem}>
   {inBasket ? 'Remove from Basket' : 'Add to Basket'}
 </button>
