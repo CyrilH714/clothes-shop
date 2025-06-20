@@ -3,25 +3,6 @@ const Schema = mongoose.Schema;
 
 
 
-const reviewSchema = new Schema(
-  {
-    author: { 
-        type:Schema.Types.ObjectId,
-         required: true },
-    message: {
-      type: String,
-      required: false,
-    },
-    rating: {
-      type: Number,
-      required: true,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
-
 const itemSchema = new Schema(
   {
     name: { 
@@ -61,8 +42,7 @@ imageURL:{
     type:String,
 required:true,}
   ,
- reviews:{
-    type:[reviewSchema],},
+ 
  },{
     timestamps: true,
   toJSON: { virtuals: true },   

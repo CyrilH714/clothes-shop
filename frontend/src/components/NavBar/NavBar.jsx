@@ -30,9 +30,7 @@ export default function NavBar({ user, setUser, basketCount, setBasketItems }) {
 )}
         {!isHome && (
         <NavLink className="link gap" to="/">
-          <button className="home-btn">
-          🏠 
-</button>
+          <button className="home-btn">🏠</button>
         </NavLink>
         )}
         {user ? (

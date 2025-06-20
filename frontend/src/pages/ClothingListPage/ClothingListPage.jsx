@@ -79,7 +79,7 @@ export default function ClothingListPage() {
           <option value="Used">Used</option>
           <option value="Worn">Worn</option>
         </select>
-
+<div classNName="filter-row">
         <label>
           Max Price: ${maxPrice}
           <input
@@ -90,6 +90,7 @@ export default function ClothingListPage() {
             onChange={e => setMaxPrice(Number(e.target.value))}
           />
         </label>
+        </div>
       </section>
 
       <section className="item-list">

@@ -15,7 +15,7 @@ const data = [
         "size": "L",
         "condition": "Like new",
         "imageURL": "/images/outerwear/outerwear_lv.png",
-        "reviews": [],
+       
     },
     {
         "name": "Canada Goose Parka",
@@ -27,7 +27,7 @@ const data = [
         "size": "M",
         "condition": "New",
         "imageURL": "/images/outerwear/outerwear_canadagoose.png",
-        "reviews": [],
+      
     },
     {
         "name": "Christian Dior Monogram Skirt",
@@ -39,7 +39,7 @@ const data = [
         "size": "S",
         "condition": "Gently used",
         "imageURL": "/images/skirts/skirt_cd.png",
-        "reviews": [],
+       
     },
     {
         "name": "Pleated Black Skirt",
@@ -51,7 +51,7 @@ const data = [
         "size": "M",
         "condition": "Worn",
         "imageURL": "/images/skirts/skirt_lv.png",
-        "reviews": [],
+        
     },
     {
         "name": "Gucci Tweed Jacket",
@@ -63,7 +63,7 @@ const data = [
         "size": "M",
         "condition": "Like new",
         "imageURL": "/images/tops/top_gucci.png",
-        "reviews": [],
+       
     },
     {
         "name": "LV Gradient T-Shirt",
@@ -75,7 +75,7 @@ const data = [
         "size": "L",
         "condition": "Like new",
         "imageURL": "/images/tops/top_lv.png",
-        "reviews": [],
+     
     },
     {
         "name": "Red Silk Evening Dress",
@@ -87,7 +87,7 @@ const data = [
         "size": "M",
         "condition": "Worn",
         "imageURL": "/images/dresses/dress_vw.png",
-        "reviews": [],
+       
     },
     {
         "name": "Sequinned Nude Dress",
@@ -99,7 +99,7 @@ const data = [
         "size": "S",
         "condition": "New",
         "imageURL": "/images/dresses/dress_prada.png",
-        "reviews": [],
+      
     },
     {
         "name": "Hermès Silk Twilly Scarf",
@@ -111,7 +111,7 @@ const data = [
         "size": "One size",
         "condition": "New",
         "imageURL": "/images/accessories/accessory_hermes.png",
-        "reviews": [],
+        
     },
     {
         "name": "Hermès Rodeo Charm",
@@ -123,7 +123,7 @@ const data = [
         "size": "One size",
         "condition": "New",
         "imageURL": "/images/accessories/accessory_hermes_2.png",
-        "reviews": [],
+      
     },
 ]
 async function seedDB() {

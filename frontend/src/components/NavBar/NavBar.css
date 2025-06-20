@@ -13,57 +13,36 @@
   align-items: center;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Helvetica, Arial, sans-serif;
-    display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; 
-  padding: 0.8rem 1.6rem;
+  padding: 0rem 2rem;
   background: var(--bg);
-  border-bottom: 1px solid #e2e2e0;
+  border-bottom: 1px solid #ccc;
+  flex-wrap: wrap;
+  font-family: "Inter", sans-serif;
+  gap: 1rem;
 }
 
-.nav-left,
-.nav-right {
+
+.left, .middle, .right {
   display: flex;
   align-items: center;
+  gap: 1rem;
 }
-.nav-left .link {
-  margin-right: 1.2rem;
-}
-
-.nav-right .link {
-  margin-right: 1.2rem;
-}
-
-.link {
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 500;
-  transition: opacity 0.2s;
-}
-.link:hover {
-  opacity: 0.7;
-}
-
-.logo { font-weight: 600; }
-
-.basket-btn {
-  background: transparent;
+.link, .link-btn, .btn-clothes, .profile-btn, .home-btn {
+  background: none;
   border: none;
-  font-size: 1.2rem;
+  padding: 0.5rem 0.5rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  position: relative;
+  border-radius: 2px;
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 500;
+  transition: background 0.2s;
 }
-.badge {
-  position: absolute;
-  top: -4px;
-  right: -12px;
-  background: var(--text);
-  color: var(--bg);
-  border-radius: 50%;
-  font-size: 0.7rem;
-  padding: 0 5px;
-}
+.logo { font-weight: 600; }
 
 
 .gap { margin-right: 1.2rem; } 
@@ -78,13 +57,36 @@
   font-size: 0.65rem;
   padding: 0 5px;
 }
-btn-clothes {
-  background: var(--text);
-  color: var(--bg);
-  padding: 0.4rem 1rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background 0.25s;
+.link-btn:hover,
+.profile-btn:hover,
+.btn-clothes:hover,
+.home-btn:hover {
+  background: var(--accent);
+  color: white;
 }
 
+.link-btn:hover,
+.profile-btn:hover,
+.btn-clothes:hover,
+.home-btn:hover {
+  background: var(--accent);
+  color: white;
+}
+.home-btn{
+ background:none;
+ border:none;
+ font-size:0.95rem;
+ padding:0rem;
+ border-radius:2px;
+ font-weight:500;
+ cursor:pointer;
+ vertical-align:top;
+ line-height:1;
+ transition:background 0.2s ease; 
+}
+
+/* .link button{
+  display:flex;
+  align-items:left;
+  justify-content:left;
+} */
