@@ -3,7 +3,7 @@
 A full-stack e-commerce web app where users can browse, view, and purchase clothing items. Built with React, Express, and MongoDB.
 
 
-🌐 **Live Site**: [https://clothes-shop-22faadb6c38b.herokuapp.com/](View factory fashion)
+🌐 **Live Site**: [View Factory Fashion here](https://clothes-shop-22faadb6c38b.herokuapp.com/)
 
 ---
 
@@ -12,7 +12,7 @@ A full-stack e-commerce web app where users can browse, view, and purchase cloth
 - 🧾 User registration and login
 - 🛒 Persistent shopping basket (for both guests and logged-in users)
 - ✅ Checkout flow with shipping and payment method capture
-- 🧍 User profile with viewable order history (coming soon)
+- 🧍 User profile with viewable order history 
 - 👑 Admin dashboard for adding/editing/deleting products
 - 🧹 Anonymous to authenticated basket syncing
 - ✅ Order saving in backend upon checkout
